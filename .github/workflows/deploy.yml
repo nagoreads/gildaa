@@ -29,15 +29,17 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
+        working-directory: ./gilda-app
         run: npm install
 
       - name: Build
+        working-directory: ./gilda-app
         run: npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'
+          path: './gilda-app/dist'
 
       - name: Deploy to GitHub Pages
         id: deployment
