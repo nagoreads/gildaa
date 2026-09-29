@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
-  },
+    "lint": "oxlint",
+    "preview": "vite preview",
     "cap:sync": "npm run build && cap sync",
     "cap:open:android": "npm run cap:sync && cap open android"
   },
