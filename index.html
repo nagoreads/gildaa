@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>gilda | club de lectura y mailclub</title>
+
+    <!-- Fontshare: Satoshi -->
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet" />
+
+    <!-- FontAwesome Icons para flechas de navegación -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+      @font-face {
+        font-family: 'BabyDoll';
+        src: url('babydoll.ttf') format('truetype'),
+             url('babydoll.otf') format('opentype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      body {
+        font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+        background-color: #FBF9F5;
+        color: #232321;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .font-babydoll {
+        font-family: 'BabyDoll', cursive, sans-serif;
+        letter-spacing: 0.5px;
+      }
+
+      .editorial-card {
+        background: #FFFFFF;
+        color: #232321;
+        border: 1px solid #E8E6DF;
+        border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      }
+
+      .editorial-input {
+        background: #F8F7F3;
+        border: 1px solid #E8E6DF;
+        border-radius: 12px;
+        color: #232321;
+        font-family: 'Satoshi', sans-serif;
+        font-size: 0.875rem;
+        transition: all 0.2s ease;
+      }
+      .editorial-input:focus {
+        outline: none;
+        background: #FFFFFF;
+        border-color: #4A5028;
+        box-shadow: 0 0 0 3px rgba(74, 80, 40, 0.12);
+      }
+
+      .editorial-btn {
+        background: #232321;
+        color: #FBF9F5;
+        border-radius: 20px;
+        font-weight: 600;
+        font-family: 'Satoshi', sans-serif;
+        letter-spacing: 0.02em;
+        transition: all 0.2s ease;
+      }
+      .editorial-btn:hover {
+        background: #4A5028;
+        color: #FFFFFF;
+      }
+
+      .fade-in {
+        animation: fadeIn 0.3s ease-out forwards;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(6px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const { useState } = React;
+
+      // Componente SVG Moderno para cada modalidad
+      function IconoModalidad({ tipo, className = "w-6 h-6" }) {
+        switch (tipo) {
+          case 'cotilla':
+            return (
+              <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            );
+          case 'satelite':
+            return (
+              <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="2" />
+                <path d="M16.2 7.8a6 6 0 0 1 0 8.4" />
+                <path d="M7.8 16.2a6 6 0 0 1 0-8.4" />
+                <path d="M19.8 4.2a11 11 0 0 1 0 15.6" />
+                <path d="M4.2 19.8a11 11 0 0 1 0-15.6" />
+              </svg>
+            );
+          case 'cafe':
+            return (
+              <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
+                <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z" />
+                <line x1="6" y1="2" x2="6" y2="4" />
+                <line x1="10" y1="2" x2="10" y2="4" />
+                <line x1="14" y1="2" x2="14" y2="4" />
+              </svg>
+            );
+          case 'nube':
+            return (
+              <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" />
+                <path d="M12 12v9" />
+                <path d="m8 17 4 4 4-4" />
+              </svg>
+            );
+          case 'papel':
+            return (
+              <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M22 13V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h9" />
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                <path d="M19 16v6" />
+                <path d="M16 19h6" />
+              </svg>
+            );
+          case 'virtual':
+            return (
+              <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+                <path d="M5 3v4" />
+                <path d="M19 17v4" />
+                <path d="M3 5h4" />
+                <path d="M17 19h4" />
+              </svg>
+            );
+          case 'absoluta':
+            return (
+              <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="7.5" cy="15.5" r="5.5" />
+                <path d="m21 2-9.6 9.6" />
+                <path d="m15.5 7.5 3 3" />
+              </svg>
+            );
+          default:
+            return (
+              <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+              </svg>
+            );
+        }
+      }
+
+      function App() {
+        const [rutaElegida, setRutaElegida] = useState(null);
+        const [modalidadSeleccionada, setModalidadSeleccionada] = useState(null);
+        const [opcionAmiga, setOpcionAmiga] = useState('De momento no');
+        const [enviando, setEnviando] = useState(false);
+        const [yaSoyGilda, setYaSoyGilda] = useState(false);
+        const [codigoSecreto, setCodigoSecreto] = useState('');
+
+        const modalidades = [
+          { id: 'cotilla', nombre: 'gilda cotilla', precio: 'Gratis', esGratis: true, soloEmail: true, pideDireccion: false, incluyeAmiga: false, enlaceStripe: 'https://buy.stripe.com/bJe4gt3IdakFdfqaxv6Ri09', descripcion: 'Solo lectura de comentarios en la app.' },
+          { id: 'satelite', nombre: 'gilda satélite', precio: '1 €/mes', esGratis: false, soloEmail: true, pideDireccion: true, incluyeAmiga: false, enlaceStripe: 'https://buy.stripe.com/cNi4gtfqV8cxeju0WV6Ri01', descripcion: 'Leer comentarios y añadir apuntes en la app (Sin chat ni cafecitos).' },
+          { id: 'cafe', nombre: 'gilda de café', precio: '5 €/mes', esGratis: false, soloEmail: false, pideDireccion: true, incluyeAmiga: true, enlaceStripe: 'https://buy.stripe.com/3cI5kx0w1gJ3fny4976Ri02', descripcion: 'Acceso a la app (Chat, cafecitos, leer comentarios y añadir apuntes).' },
+          { id: 'nube', nombre: 'gilda de nube', precio: '5 €/mes', esGratis: false, soloEmail: false, pideDireccion: true, incluyeAmiga: true, enlaceStripe: 'https://buy.stripe.com/cNi5kx92xcsNb7i3536Ri03', descripcion: 'Recibes por email la carta, plantilla, anti-guía de la autora, pegatinas y marcapáginas digital.' },
+          { id: 'papel', nombre: 'gilda de papel', precio: '10 €/mes', esGratis: false, soloEmail: false, pideDireccion: true, incluyeAmiga: true, enlaceStripe: 'https://buy.stripe.com/bJe8wJ7Yt50l1wIbBz6Ri04', descripcion: 'Envío físico a tu buzón con carta, plantilla, anti-guía, pegatinas, marcapáginas y sorpresas.' },
+          { id: 'virtual', nombre: 'gilda virtual', precio: '8 €/mes', esGratis: false, soloEmail: false, pideDireccion: true, incluyeAmiga: true, enlaceStripe: 'https://buy.stripe.com/bJe9ANguZ9gB6R27lj6Ri05', destacado: true, descripcion: 'Envío digital por email + Acceso total a la app (Chat, cafecitos, comentarios y apuntes).' },
+          { id: 'absoluta', nombre: 'gilda absoluta', precio: '12 €/mes', esGratis: false, soloEmail: false, pideDireccion: true, incluyeAmiga: true, enlaceStripe: 'https://buy.stripe.com/14A5kxemReAV2AMcFD6Ri08', descripcion: 'Envío físico a tu buzón + Acceso total a la app y club de lectura (Chat, cafecitos, comentarios).' }
+        ];
+
+        const modalidadGratis = modalidades.find((m) => m.esGratis);
+        const modalidadesPago = modalidades.filter((m) => !m.esGratis);
+
+        const volverAlInicio = () => { setRutaElegida(null); setModalidadSeleccionada(null); setYaSoyGilda(false); setCodigoSecreto(''); };
+        const volverAModalidades = () => { if (rutaElegida === 'gratis') volverAlInicio(); else { setModalidadSeleccionada(null); setYaSoyGilda(false); setCodigoSecreto(''); } };
+
+        const enviarFormulario = async (e) => {
+          e.preventDefault();
+          if (yaSoyGilda && codigoSecreto.trim().toUpperCase() !== 'GILDA-VET-4X9P') {
+            alert('❌ El código de veterana no es correcto. Por favor, revísalo o desmarca la casilla si eres nueva.');
+            return;
+          }
+          setEnviando(true);
+          const form = e.target;
+          const data = new FormData(form);
+          const enlaceDestino = yaSoyGilda || modalidadSeleccionada.esGratis ? 'https://gildamailclub.glideos.app' : modalidadSeleccionada.enlaceStripe;
+          try { await fetch(form.action, { method: form.method, body: data }); } catch (error) { console.error('Error enviando a Make:', error); }
+          window.location.href = enlaceDestino;
+        };
+
+        return (
+          <div className="min-h-screen flex flex-col items-center pt-12 pb-24 px-4 sm:px-6 text-[#232321]">
+            <header className="max-w-2xl w-full text-center space-y-3 mb-10">
+              <h1 className="text-5xl md:text-6xl font-babydoll font-bold text-[#232321]">bienvenida a gilda.</h1>
+              <p className="text-sm md:text-base text-gray-500 leading-relaxed font-sans italic px-4">mucho más que un club de lectura y un mailclub. un espacio íntimo y seguro para leer y compartir a nuestro propio ritmo.</p>
+            </header>
+
+            {!rutaElegida && !modalidadSeleccionada && (
+              <main className="max-w-3xl w-full fade-in space-y-8">
+                <h2 className="text-xl md:text-2xl font-babydoll font-bold text-center text-[#232321] leading-snug">
+                  me hace muchísima ilusión tenerte por aquí.<br />¿cómo quieres vivir esta experiencia?
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <button onClick={() => setRutaElegida('pago')} className="group editorial-card flex flex-col items-center justify-center p-8 hover:border-[#4A5028] transition-all text-center">
+                    <div className="w-12 h-12 bg-[#FAF6E8] rounded-2xl flex items-center justify-center mb-4 text-[#4A5028] group-hover:scale-105 transition-transform border border-[#E8E6DF]">
+                      <IconoModalidad tipo="virtual" className="w-6 h-6" />
+                    </div>
+                    <h3 className="text-2xl font-babydoll font-bold mb-2 text-[#232321]">desde dentro</h3>
+                    <p className="text-xs text-gray-500 font-sans leading-relaxed">accede al club de lectura, los cafecitos con autoras, recibe tu mail o carta y participa en el sorteo de varios libros.</p>
+                  </button>
+                  <button onClick={() => { setRutaElegida('gratis'); setModalidadSeleccionada(modalidadGratis); }} className="group editorial-card flex flex-col items-center justify-center p-8 hover:border-[#4A5028] transition-all text-center">
+                    <div className="w-12 h-12 bg-[#FAF6E8] rounded-2xl flex items-center justify-center mb-4 text-[#4A5028] group-hover:scale-105 transition-transform border border-[#E8E6DF]">
+                      <IconoModalidad tipo="cotilla" className="w-6 h-6" />
+                    </div>
+                    <h3 className="text-2xl font-babydoll font-bold mb-2 text-[#232321]">asomarme un ratito</h3>
+                    <p className="text-xs text-gray-500 font-sans leading-relaxed">únete gratis como gilda cotilla para ver si esto te encaja.</p>
+                  </button>
+                </div>
+              </main>
+            )}
+
+            {rutaElegida === 'pago' && !modalidadSeleccionada && (
+              <div className="w-full max-w-5xl fade-in space-y-6">
+                <button onClick={volverAlInicio} className="text-xs font-semibold text-gray-500 hover:text-[#232321] flex items-center group font-sans">
+                  <i className="fa-solid fa-arrow-left mr-2 text-[10px] group-hover:-translate-x-1 transition-transform"></i> volver atrás
+                </button>
+                <div className="text-center mb-6">
+                  <h2 className="text-3xl font-babydoll font-bold text-[#232321]">elige tu experiencia</h2>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {modalidadesPago.map((mod, index) => (
+                    <div key={index} className={`relative flex flex-col editorial-card p-6 text-left ${mod.destacado ? 'border-[#4A5028] border-2 shadow-md lg:scale-105 z-10' : ''} hover:border-[#4A5028] transition-all`}>
+                      {mod.destacado && <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#4A5028] text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider font-sans">más popular</span>}
+                      <div className="w-10 h-10 rounded-xl bg-[#FAF6E8] border border-[#E8E6DF] flex items-center justify-center text-[#4A5028] mb-4 shrink-0">
+                        <IconoModalidad tipo={mod.id} className="w-5 h-5" />
+                      </div>
+                      <h3 className="text-xl font-babydoll font-bold text-[#232321]">{mod.nombre}</h3>
+                      <div className="mt-1 mb-3"><span className="text-xl font-bold font-sans text-[#4A5028]">{mod.precio}</span></div>
+                      <p className="text-xs text-gray-500 mb-6 flex-grow leading-relaxed font-sans">{mod.descripcion}</p>
+                      <button onClick={() => { setModalidadSeleccionada(mod); setOpcionAmiga('De momento no'); }} className={`w-full py-2.5 rounded-2xl font-semibold text-xs transition-colors mt-auto font-sans ${mod.destacado ? 'editorial-btn' : 'bg-[#F8F7F3] border border-[#E8E6DF] text-[#232321] hover:bg-[#4A5028] hover:text-white'}`}>
+                        quiero esta modalidad
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {modalidadSeleccionada && (
+              <div className="w-full max-w-xl fade-in text-left space-y-6">
+                <button onClick={volverAModalidades} className="text-xs font-semibold text-gray-500 hover:text-[#232321] flex items-center group font-sans">
+                  <i className="fa-solid fa-arrow-left mr-2 text-[10px] group-hover:-translate-x-1 transition-transform"></i> {rutaElegida === 'gratis' ? 'volver al inicio' : 'volver a las modalidades'}
+                </button>
+                <div className="editorial-card p-8 md:p-10 space-y-6">
+                  <div className="border-b border-[#E8E6DF] pb-5">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-9 h-9 rounded-xl bg-[#FAF6E8] border border-[#E8E6DF] flex items-center justify-center text-[#4A5028] shrink-0">
+                        <IconoModalidad tipo={modalidadSeleccionada.id} className="w-5 h-5" />
+                      </div>
+                      <h2 className="text-3xl font-babydoll font-bold text-[#232321]">ya casi lo tenemos</h2>
+                    </div>
+                    <p className="text-xs text-gray-500 font-sans leading-relaxed">
+                      estás a punto de unirte a <strong className="text-[#232321]">{modalidadSeleccionada.nombre}</strong> ({modalidadSeleccionada.precio}). déjame tus datos para que pueda preparar tu llegada.
+                    </p>
+                  </div>
+                  <form action="https://hook.eu1.make.com/jqyyj744ed5u2mxpf7uawxzaleraqs4f" method="POST" onSubmit={enviarFormulario} className="space-y-4 font-sans">
+                    <input type="hidden" name="Modalidad_Elegida" value={`${modalidadSeleccionada.nombre} (${modalidadSeleccionada.precio})`} />
+                    <input type="hidden" name="_subject" value={`¡Nueva ${modalidadSeleccionada.nombre}!`} />
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-700 mb-1">Nombre completo *</label>
+                      <input type="text" name="Nombre" required className="w-full editorial-input px-3.5 py-2.5" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-700 mb-1">Correo electrónico *</label>
+                      <input type="email" name="Email" required placeholder="hola@ejemplo.com" className="w-full editorial-input px-3.5 py-2.5" />
+                    </div>
+                    <button type="submit" disabled={enviando} className="w-full editorial-btn py-3 text-sm mt-2 flex items-center justify-center gap-2">
+                      {enviando ? 'Procesando...' : (
+                        <>
+                          <span>apúntate aquí</span>
+                          <i className="fa-solid fa-arrow-right text-xs"></i>
+                        </>
+                      )}
+                    </button>
+                  </form>
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(<App />);
+    </script>
+  </body>
+</html>

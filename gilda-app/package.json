@@ -1,0 +1,35 @@
+{
+  "name": "gilda-app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "oxlint",
+    "preview": "vite preview",
+    "cap:sync": "npm run build && cap sync",
+    "cap:open:android": "npm run cap:sync && cap open android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.5.2",
+    "@capacitor/core": "^8.5.2",
+    "@capacitor/push-notifications": "^8.1.2",
+    "leaflet": "^1.9.4",
+    "papaparse": "^5.7.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.4.3",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/leaflet": "^1.9.22",
+    "@types/papaparse": "^5.5.2",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "oxlint": "^1.81.0",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.3.0"
+  }
+}

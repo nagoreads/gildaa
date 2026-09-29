@@ -1,0 +1,16 @@
+{
+  "name": "gilda — club de lectura",
+  "short_name": "gilda",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffee",
+  "theme_color": "#3d4220",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
